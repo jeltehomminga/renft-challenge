@@ -8,10 +8,8 @@ export interface StepComponentProps {
 }
 
 export const StepD = (props: StepComponentProps & { onSubmit: () => void }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) =>
     props.onSubmit();
-  };
 
   return (
     <form onSubmit={handleSubmit}>
