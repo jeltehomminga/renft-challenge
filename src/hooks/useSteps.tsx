@@ -21,7 +21,6 @@ export function useSteps<S extends string>(
   initialStep: S
 ): UseStepState<S> & UseStepApi<S> {
   const [stepsHistory, setStepsHistory] = useState<S[]>([initialStep]);
-  const [step, setStep] = useState<S>(initialStep);
 
   // assumption is that when we go back to a previousStep
   // we can remove the last step to get back to the previousStep
@@ -33,9 +32,7 @@ export function useSteps<S extends string>(
     const newStepHistory = stepsHistory.filter(
       (_, i, arr) => i !== arr.length - 1
     );
-
     setStepsHistory(newStepHistory);
-
     return {
       step: newStepHistory.at(-1) ?? initialStep,
       stepsHistory: newStepHistory,
@@ -45,8 +42,7 @@ export function useSteps<S extends string>(
   const goToNextStep = (step: S): UseStepState<S> => {
     // assumption is we want to go to the step that is passed as an argument
     // otherwise go to previousStep or if none yet then go to initialStep
-    const nextStep = step;
-    const newStepHistory = [...stepsHistory, nextStep];
+    const newStepHistory = [...stepsHistory, step];
 
     setStepsHistory(newStepHistory);
 
@@ -56,7 +52,7 @@ export function useSteps<S extends string>(
     };
   };
 
-  const goToInitialStep = () => setStep(initialStep);
+  const goToInitialStep = () => goToNextStep(initialStep);
 
   return {
     step: stepsHistory.at(-1) ?? initialStep,
